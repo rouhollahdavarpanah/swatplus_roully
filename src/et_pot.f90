@@ -184,7 +184,7 @@
 
            !! potential ET: reference crop alfalfa at 40 cm height
            rv = 114. / (w%windsp * (170./1000.)**0.2)
-           rc = 49. / (1.4 - 0.4 * co2y(time%yrs) / 330.)
+           rc = 49. / (1.4 - 0.4 * co2_current() / 330.)
            pet_day = (dlt * rn_pet + gma * rho * vpd / rv) / (xl * (dlt + gma * (1. + rc / rv)))
            pet_day = Max(0., pet_day)
  
@@ -248,7 +248,7 @@
           
             !! calculate canopy resistance
             rc = 1. / (gsi_adj + 0.01)           !single leaf resistance
-            rc = rc / (0.5 * (pcom(j)%lai_sum + 0.01) * (1.4 - 0.4 * co2y(time%yrs) / 330.))
+            rc = rc / (0.5 * (pcom(j)%lai_sum + 0.01) * (1.4 - 0.4 * co2_current() / 330.))
 
             !! calculate maximum plant ET
             ep_max = (dlt * rn + gma * rho * vpd / rv) / (xl * (dlt + gma * (1. + rc / rv)))

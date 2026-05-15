@@ -41,8 +41,8 @@
           !! calculate optimal biomass
           !! adjust radiation-use efficiency for CO2
           if (bsn_prm%co2 > 350.) then
-            beadj = 100. * co2y(time%yrs) / (co2y(time%yrs) +        &
-                Exp(plcp(idp)%ruc1 - co2y(time%yrs) * plcp(idp)%ruc2))
+            beadj = 100. * co2_current() / (co2_current() +        &
+                Exp(plcp(idp)%ruc1 - co2_current() * plcp(idp)%ruc2))
           else
             beadj = pldb(idp)%bio_e
           end if
