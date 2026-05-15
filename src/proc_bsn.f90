@@ -34,7 +34,6 @@
       call co2_read
       call carbon_bsn_read
       call carbon_layers_read
-
       return
       
       end subroutine proc_bsn

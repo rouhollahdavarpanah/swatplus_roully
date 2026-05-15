@@ -20,6 +20,13 @@
       real, dimension (:), allocatable :: rnd9                  !none          |random number between 0.0 and 1.0
       integer :: rndseed_cond = 748932582   ! random number seed for dtbl conditional
       real, dimension(:), allocatable :: co2y
+      real, dimension(:), allocatable :: co2_daily
+      integer, dimension(:), allocatable :: co2_yr_in
+      integer, dimension(:), allocatable :: co2_mo_in
+      integer, dimension(:), allocatable :: co2_dy_in
+      real, dimension(:), allocatable :: co2_val_in
+      integer :: co2_nrec = 0
+      integer :: co2_interp = 1
 
       type weather_generator_db      
         real :: lat =  0.0                          !! degrees      |latitude of weather station used to compile data
@@ -260,14 +267,21 @@
       contains
 
       function co2_current() result(c)
-        use time_module
-        implicit none
-        real :: c
-        if (allocated(co2y)) then
-          c = co2y(time%yrs)
-        else
-          c = 400.
-        end if
-      end function co2_current    
-      
+          use time_module
+          implicit none
+          real :: c
+          integer :: iday
+          if (allocated(co2_daily)) then
+              !! use daily array if available
+              iday = (time%yrs - 1) * 365 + time%day
+              iday = max(1, min(iday, size(co2_daily)))
+              c = co2_daily(iday)
+          else if (allocated(co2y)) then
+              !! fall back to annual array
+              c = co2y(time%yrs)
+          else
+              !! last resort default
+              c = 400.
+          end if
+      end function co2_current
       end module climate_module
