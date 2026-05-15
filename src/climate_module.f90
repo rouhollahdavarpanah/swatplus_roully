@@ -256,5 +256,18 @@
       character(len=50), dimension(:), allocatable :: wnd_n
       character(len=50), dimension(:), allocatable :: atmo_n
       character(len=50), dimension(:), allocatable :: petm_n
-          
+      
+      contains
+
+      function co2_current() result(c)
+        use time_module
+        implicit none
+        real :: c
+        if (allocated(co2y)) then
+          c = co2y(time%yrs)
+        else
+          c = 400.
+        end if
+      end function co2_current    
+      
       end module climate_module
