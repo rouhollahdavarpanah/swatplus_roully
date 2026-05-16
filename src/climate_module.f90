@@ -27,6 +27,8 @@
       real, dimension(:), allocatable :: co2_val_in
       integer :: co2_nrec = 0
       integer :: co2_interp = 1
+      integer :: co2_data_res = 2
+      integer :: co2_use_res = 1
 
       type weather_generator_db      
         real :: lat =  0.0                          !! degrees      |latitude of weather station used to compile data

@@ -1,38 +1,23 @@
 co2 input file - SWAT+ dynamic CO2 driver
 ! ============================================================
-! SWAT+ Dynamic CO2 Input File
-! Developed for SWAT+ eCO2 research framework
-! Data source: NOAA Mauna Loa Observatory (gml.noaa.gov)
+! SWAT+ Dynamic CO2 Input File - DAILY FORMAT
 ! ============================================================
-!
 ! data_res: format of your input data
-!           1 = daily   (year month day co2_ppm)
-!           2 = monthly (year month co2_ppm)
-!           3 = annual  (year co2_ppm)
-!
-! use_res:  how model incorporates CO2 in simulation
-!           1 = daily   each day gets its own CO2 value
-!                       (most realistic)
-!           2 = monthly same CO2 value for all days in a month
-!           3 = annual  same CO2 value for all days in a year
-!                       (least realistic)
-!
-! interp:   interpolation method (used when use_res < data_res)
-!           0 = step     sudden change at record boundary
-!           1 = linear   smooth change between records
-!
-! NOTE: data_res and use_res can be different
-!   Example: data_res=1, use_res=3
-!            provide daily data but model uses annual average
-!            useful for sensitivity analysis
-!
+!           1 = daily (one value per day)
+! use_res:  how model uses CO2 in simulation
+!           1 = daily   (each day gets its exact value)
+!           2 = monthly (averaged to monthly value)
+!           3 = annual  (averaged to annual value)
+! interp:   interpolation method
+!           0 = step function (sudden change)
+!           1 = linear interpolation (smooth change)
 ! ============================================================
 data_res  1
 use_res   1
 interp    1
 ! ============================================================
-! DATA: replace with your own values
-! Format: year  month  day  co2_ppm
+! DATA: replace with your own daily CO2 values
+! Source: NOAA Mauna Loa Observatory (gml.noaa.gov)
 ! ============================================================
 year  month  day  co2_ppm
 1975  1  1  330.4003
