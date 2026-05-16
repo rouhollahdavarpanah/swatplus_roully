@@ -25,6 +25,7 @@
       integer, dimension(:), allocatable :: co2_mo_in
       integer, dimension(:), allocatable :: co2_dy_in
       real, dimension(:), allocatable :: co2_val_in
+      integer, dimension(:), allocatable :: co2_yr_orig
       integer :: co2_nrec = 0
       integer :: co2_interp = 1
       integer :: co2_data_res = 2

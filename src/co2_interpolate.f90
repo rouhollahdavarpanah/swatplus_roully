@@ -114,12 +114,12 @@ subroutine co2_interpolate(co2_ndays)
       !! use_res=3: annual — average records per year, same value all days
       else if (co2_use_res == 3) then
         do iyr = 1, time%nbyr
-          !! find records belonging to this year
+          !! find records belonging to this calendar year
+          !! use original year values stored before conversion
           co2_sum   = 0.
           co2_count = 0
           do irec = 1, co2_nrec
-            if (co2_yr_in(irec) >= (iyr-1)*365 + 1 .and. &
-                co2_yr_in(irec) <= iyr*365) then
+            if (co2_yr_orig(irec) == time%yrc_start + iyr - 1) then
               co2_sum   = co2_sum + co2_val_in(irec)
               co2_count = co2_count + 1
             end if

@@ -79,11 +79,13 @@ subroutine co2_dyn_read
       allocate(co2_mo_in(co2_nrec))
       allocate(co2_dy_in(co2_nrec))
       allocate(co2_val_in(co2_nrec))
-
+      allocate(co2_yr_orig(co2_nrec))
+      
       co2_yr_in = 0
       co2_mo_in = 1
       co2_dy_in = 1
       co2_val_in = 0.
+      co2_yr_orig = 0
 
       open(108, file="co2.cli", status="old", action="read")
 
@@ -113,6 +115,7 @@ subroutine co2_dyn_read
         co2_mo_in(irec)  = imo
         co2_dy_in(irec)  = idy
         co2_val_in(irec) = co2val
+        co2_yr_orig(irec) = iyr
       end do
 
       close(108)
