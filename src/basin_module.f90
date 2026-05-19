@@ -129,6 +129,7 @@
                                     !!  overland flow erosion
         real :: ch_d50 = 0.         !! median particle diameter of main channel (mm)
         real :: co2 = 400.          !! co2 concentration at start of simulation (ppm)
+        real :: co2_ref = 330.      !! ppm  |reference CO2 for stomatal conductance adjustment
         integer :: day_lag_mx = 0   !! max days to lag hydrographs for hru, ru and channels
                                     !!  non-draining soils
         integer :: igen = 5         !!  random generator code: 
