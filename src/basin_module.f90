@@ -72,7 +72,9 @@
                                  !! 2 = Use epic tillage method to use if cswat = 2
                                  !! 3 = Use Kemanian tillage method to use if cswat = 2
                                  !! 4 = Use dndc tillage method to use if cswat = 2
-
+        integer :: gs_method = 0 !! stomatal conductance CO2 response method
+                                 !!   0 = linear Easterling 1992 (default, backward compatible)
+                                 !!   1 = nonlinear Modified Hyperbolic Li et al. 2019
       end type basin_control_codes
       type (basin_control_codes) :: bsn_cc
 
@@ -130,6 +132,7 @@
         real :: ch_d50 = 0.         !! median particle diameter of main channel (mm)
         real :: co2 = 400.          !! co2 concentration at start of simulation (ppm)
         real :: co2_ref = 330.      !! ppm  |reference CO2 for stomatal conductance adjustment
+        real :: gs_b = 0.663        !! none |shape parameter for nonlinear gs-CO2 (Li et al. 2019)
         integer :: day_lag_mx = 0   !! max days to lag hydrographs for hru, ru and channels
                                     !!  non-draining soils
         integer :: igen = 5         !!  random generator code: 

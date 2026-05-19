@@ -184,7 +184,15 @@
 
            !! potential ET: reference crop alfalfa at 40 cm height
            rv = 114. / (w%windsp * (170./1000.)**0.2)
-           rc = 49. / (1.4 - 0.4 * co2_current() / bsn_prm%co2_ref)
+           !! stomatal conductance CO2 response for reference crop
+           select case (bsn_cc%gs_method)
+             case (0)
+               !! linear Easterling 1992 (default)
+               rc = 49. / (1.4 - 0.4 * co2_current() / bsn_prm%co2_ref)
+             case (1)
+               !! nonlinear Modified Hyperbolic Li et al. 2019
+               rc = 49. * (1.0 + bsn_prm%gs_b * (co2_current() / bsn_prm%co2_ref - 1.0))
+           end select
            pet_day = (dlt * rn_pet + gma * rho * vpd / rv) / (xl * (dlt + gma * (1. + rc / rv)))
            pet_day = Max(0., pet_day)
  
@@ -248,7 +256,15 @@
           
             !! calculate canopy resistance
             rc = 1. / (gsi_adj + 0.01)           !single leaf resistance
-            rc = rc / (0.5 * (pcom(j)%lai_sum + 0.01) * (1.4 - 0.4 * co2_current() / bsn_prm%co2_ref))
+            !! stomatal conductance CO2 response for plant canopy
+            select case (bsn_cc%gs_method)
+              case (0)
+                !! linear Easterling 1992 (default)
+                rc = rc / (0.5 * (pcom(j)%lai_sum + 0.01) * (1.4 - 0.4 * co2_current() / bsn_prm%co2_ref))
+              case (1)
+                !! nonlinear Modified Hyperbolic Li et al. 2019
+                rc = rc / (0.5 * (pcom(j)%lai_sum + 0.01) / (1.0 + bsn_prm%gs_b * (co2_current() / bsn_prm%co2_ref - 1.0)))
+            end select
 
             !! calculate maximum plant ET
             ep_max = (dlt * rn + gma * rho * vpd / rv) / (xl * (dlt + gma * (1. + rc / rv)))
