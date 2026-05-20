@@ -73,8 +73,9 @@
                                  !! 3 = Use Kemanian tillage method to use if cswat = 2
                                  !! 4 = Use dndc tillage method to use if cswat = 2
         integer :: gs_method = 0 !! stomatal conductance CO2 response method
-                                 !!   0 = linear Easterling 1992 (default, backward compatible)
-                                 !!   1 = nonlinear Modified Hyperbolic Li et al. 2019
+                                 !!   0 = SWAT-default: linear gs (Easterling 1992), no LAI-CO2
+                                 !!   1 = SWAT-gs: nonlinear MH gs (Li et al. 2019), no LAI-CO2
+                                 !!   2 = SWAT-gs-LAI: nonlinear MH gs + LAI-CO2 (Wen et al. 2024)
       end type basin_control_codes
       type (basin_control_codes) :: bsn_cc
 

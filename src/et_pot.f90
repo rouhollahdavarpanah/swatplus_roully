@@ -187,12 +187,14 @@
            !! stomatal conductance CO2 response for reference crop
            select case (bsn_cc%gs_method)
              case (0)
-               !! linear Easterling 1992 (default)
+               !! SWAT-default: linear gs (Easterling 1992)
                rc = 49. / (1.4 - 0.4 * co2_current() / bsn_prm%co2_ref)
              case (1)
-               !! nonlinear MH gs + LAI-CO2 for reference alfalfa (Wen et al. 2024)
-               !! gs factor: 1/(1+b*(CO2/CO2ref-1))
-               !! LAI factor: (1-0.37) + 0.37*(CO2/CO2ref)  q_alfalfa=0.37
+               !! SWAT-gs: nonlinear MH gs only (Li et al. 2019)
+               rc = 49. * (1.0 + bsn_prm%gs_b * &
+                    (co2_current() / bsn_prm%co2_ref - 1.0))
+             case (2)
+               !! SWAT-gs-LAI: nonlinear MH gs + LAI-CO2 alfalfa (Wen et al. 2024)
                rc = 49. * (1.0 + bsn_prm%gs_b * &
                     (co2_current() / bsn_prm%co2_ref - 1.0)) / &
                     ((1.0 - 0.37) + 0.37 * co2_current() / bsn_prm%co2_ref)
@@ -263,11 +265,13 @@
             !! stomatal conductance CO2 response for plant canopy
             select case (bsn_cc%gs_method)
               case (0)
-                !! linear Easterling 1992 (default)
-                rc = rc / (0.5 * (pcom(j)%lai_sum + 0.01) * (1.4 - 0.4 * co2_current() / bsn_prm%co2_ref))
-              case (1)
-                !! nonlinear Modified Hyperbolic Li et al. 2019
-                rc = rc / (0.5 * (pcom(j)%lai_sum + 0.01) / (1.0 + bsn_prm%gs_b * (co2_current() / bsn_prm%co2_ref - 1.0)))
+                !! SWAT-default: linear gs (Easterling 1992)
+                rc = rc / (0.5 * (pcom(j)%lai_sum + 0.01) * &
+                     (1.4 - 0.4 * co2_current() / bsn_prm%co2_ref))
+              case (1, 2)
+                !! SWAT-gs / SWAT-gs-LAI: nonlinear MH gs (Li et al. 2019)
+                rc = rc / (0.5 * (pcom(j)%lai_sum + 0.01) / &
+                     (1.0 + bsn_prm%gs_b * (co2_current() / bsn_prm%co2_ref - 1.0)))
             end select
 
             !! calculate maximum plant ET
