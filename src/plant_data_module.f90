@@ -100,7 +100,10 @@
                                          !                     plants during monsoon season - pcom()%plcur()%iseason
         real :: aeration = 0.2           !                  |aeration stress factor
         real :: rsd_pctcov = 0.          !                  |residue factor for percent cover equation
+        real :: q_lai = 0.15             !none              |LAI-CO2 sensitivity (Wen et al. 2024)
+                                         !                  |0.15=C3 crops; 0.25=C4 crops; 0=no response
         real :: rsd_covfac = 0.          !                  |residue factor for surface cover (C factor) equation
+        
         !character(len=45) :: desc = "unknown"
         type (residue_partition_fracs) :: res_part_fracs
       end type plant_db

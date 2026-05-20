@@ -59,6 +59,7 @@
 
       use plant_data_module
       use basin_module
+      use climate_module
       use hru_module, only : ihru, ipl
       use plant_module
       use carbon_module
@@ -115,7 +116,15 @@
               laimax = pcom(j)%plcur(ipl)%lai_pot * 10. ** lai_exp
               laimax = Min (laimax, pcom(j)%plcur(ipl)%lai_pot)
             else
-              laimax = pcom(j)%plcur(ipl)%lai_pot
+              !! LAI-CO2 response (Wen et al. 2024)
+              select case (bsn_cc%gs_method)
+                case (0)
+                  laimax = pcom(j)%plcur(ipl)%lai_pot
+                case (1)
+                  laimax = pcom(j)%plcur(ipl)%lai_pot * &
+                           ((1.0 - pldb(idp)%q_lai) + &
+                           pldb(idp)%q_lai * co2_current() / bsn_prm%co2_ref)
+              end select
             end if
             
             !! calculate new canopy height

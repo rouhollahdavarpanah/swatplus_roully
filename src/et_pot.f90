@@ -190,8 +190,12 @@
                !! linear Easterling 1992 (default)
                rc = 49. / (1.4 - 0.4 * co2_current() / bsn_prm%co2_ref)
              case (1)
-               !! nonlinear Modified Hyperbolic Li et al. 2019
-               rc = 49. * (1.0 + bsn_prm%gs_b * (co2_current() / bsn_prm%co2_ref - 1.0))
+               !! nonlinear MH gs + LAI-CO2 for reference alfalfa (Wen et al. 2024)
+               !! gs factor: 1/(1+b*(CO2/CO2ref-1))
+               !! LAI factor: (1-0.37) + 0.37*(CO2/CO2ref)  q_alfalfa=0.37
+               rc = 49. * (1.0 + bsn_prm%gs_b * &
+                    (co2_current() / bsn_prm%co2_ref - 1.0)) / &
+                    ((1.0 - 0.37) + 0.37 * co2_current() / bsn_prm%co2_ref)
            end select
            pet_day = (dlt * rn_pet + gma * rho * vpd / rv) / (xl * (dlt + gma * (1. + rc / rv)))
            pet_day = Max(0., pet_day)
