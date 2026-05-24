@@ -37,41 +37,78 @@ subroutine co2_interpolate(co2_ndays)
           end if
         end do
 
-      !! case B — monthly or annual: interpolate to daily first
-      else
-        !! convert year/month/day to simulation day number
+      !! case B — annual: assign one value per year to all days
+      else if (co2_data_res == 3) then
         do irec = 1, co2_nrec
-          co2_yr_in(irec) = (co2_yr_in(irec) - time%yrc_start) * 365 + &
-                            (co2_mo_in(irec) - 1) * 30 + co2_dy_in(irec)
+          co2_yr_in(irec) = (co2_yr_in(irec) - time%yrc_start) * 365 + 1
         end do
-
-        !! fill temp array with interpolated daily values
+        !! fill temp array — step function by year
         do iday = 1, co2_ndays
-          !! before first record
           if (iday <= co2_yr_in(1)) then
             co2_temp(iday) = co2_val_in(1)
-          !! after last record
           else if (iday >= co2_yr_in(co2_nrec)) then
             co2_temp(iday) = co2_val_in(co2_nrec)
-          !! between records
           else
             do irec = 1, co2_nrec - 1
               day1 = co2_yr_in(irec)
               day2 = co2_yr_in(irec + 1)
               if (iday >= day1 .and. iday < day2) then
-                co2_1 = co2_val_in(irec)
-                co2_2 = co2_val_in(irec + 1)
-                if (co2_interp == 1) then
-                  frac = real(iday - day1) / real(day2 - day1)
-                  co2_temp(iday) = co2_1 + frac * (co2_2 - co2_1)
-                else
-                  co2_temp(iday) = co2_1
-                end if
+                co2_temp(iday) = co2_val_in(irec)
                 exit
               end if
             end do
           end if
         end do
+
+      !! case B — annual: step function, one value per year
+      else if (co2_data_res == 3) then
+        !! assign each record to day 1 of its year
+        do irec = 1, co2_nrec
+          co2_yr_in(irec) = (co2_yr_in(irec) - time%yrc_start) * 365 + 1
+        end do
+        !! fill temp array as step function
+        do iday = 1, co2_ndays
+          if (iday <= co2_yr_in(1)) then
+            co2_temp(iday) = co2_val_in(1)
+          else if (iday >= co2_yr_in(co2_nrec)) then
+            co2_temp(iday) = co2_val_in(co2_nrec)
+          else
+            do irec = 1, co2_nrec - 1
+              day1 = co2_yr_in(irec)
+              day2 = co2_yr_in(irec + 1)
+              if (iday >= day1 .and. iday < day2) then
+                co2_temp(iday) = co2_val_in(irec)
+                exit
+              end if
+            end do
+          end if
+        end do
+
+      !! case C — monthly: step function, one value per month
+      else if (co2_data_res == 2) then
+        !! assign each record to day 1 of its month
+        do irec = 1, co2_nrec
+          co2_yr_in(irec) = (co2_yr_in(irec) - time%yrc_start) * 365 + &
+                            (co2_mo_in(irec) - 1) * 30 + 1
+        end do
+        !! fill temp array as step function
+        do iday = 1, co2_ndays
+          if (iday <= co2_yr_in(1)) then
+            co2_temp(iday) = co2_val_in(1)
+          else if (iday >= co2_yr_in(co2_nrec)) then
+            co2_temp(iday) = co2_val_in(co2_nrec)
+          else
+            do irec = 1, co2_nrec - 1
+              day1 = co2_yr_in(irec)
+              day2 = co2_yr_in(irec + 1)
+              if (iday >= day1 .and. iday < day2) then
+                co2_temp(iday) = co2_val_in(irec)
+                exit
+              end if
+            end do
+          end if
+        end do
+
       end if
 
       !! ─────────────────────────────────────────────────────
@@ -124,8 +161,7 @@ subroutine co2_interpolate(co2_ndays)
               co2_count = co2_count + 1
             end if
           end do
-          !! DEBUG — write after inner loop
-          write(9998,*) iyr, co2_sum, co2_count, co2_sum/max(1,co2_count)
+          
           !! if no records found use mid-year value
           if (co2_count == 0) then
             co2_sum   = co2_temp((iyr-1)*365 + 183)
@@ -135,12 +171,7 @@ subroutine co2_interpolate(co2_ndays)
           do iday = (iyr-1)*365 + 1, min(iyr*365, co2_ndays)
             co2_daily(iday) = co2_sum / real(co2_count)
           end do
-          !! DEBUG check first and last day of each year
-          if (iyr <= 2) then
-            write(9998,*) "yr=", iyr, &
-              " day1=", co2_daily((iyr-1)*365+1), &
-              " day365=", co2_daily(iyr*365)
-          end if
+          
         end do
 
       end if
