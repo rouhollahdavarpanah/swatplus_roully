@@ -185,16 +185,16 @@
            !! potential ET: reference crop alfalfa at 40 cm height
            rv = 114. / (w%windsp * (170./1000.)**0.2)
            !! stomatal conductance CO2 response for reference crop
-           select case (bsn_cc%gs_method)
+           select case (bsn_cc%gs_LAI_method)
              case (0)
-               !! SWAT-default: linear gs (Easterling 1992)
                rc = 49. / (1.4 - 0.4 * co2_current() / bsn_prm%co2_ref)
              case (1)
-               !! SWAT-gs: nonlinear MH gs only (Li et al. 2019)
                rc = 49. * (1.0 + bsn_prm%gs_b * &
                     (co2_current() / bsn_prm%co2_ref - 1.0))
              case (2)
-               !! SWAT-gs-LAI: nonlinear MH gs + LAI-CO2 alfalfa (Wen et al. 2024)
+               rc = 49. / (1.4 - 0.4 * co2_current() / bsn_prm%co2_ref) / &
+                    ((1.0 - 0.37) + 0.37 * co2_current() / bsn_prm%co2_ref)
+             case (3)
                rc = 49. * (1.0 + bsn_prm%gs_b * &
                     (co2_current() / bsn_prm%co2_ref - 1.0)) / &
                     ((1.0 - 0.37) + 0.37 * co2_current() / bsn_prm%co2_ref)
@@ -263,12 +263,12 @@
             !! calculate canopy resistance
             rc = 1. / (gsi_adj + 0.01)           !single leaf resistance
             !! stomatal conductance CO2 response for plant canopy
-            select case (bsn_cc%gs_method)
-              case (0)
-                !! SWAT-default: linear gs (Easterling 1992)
+            select case (bsn_cc%gs_LAI_method)
+              case (0, 2)
+                !! SWAT-default / SWAT-LAI: linear gs (Easterling 1992)
                 rc = rc / (0.5 * (pcom(j)%lai_sum + 0.01) * &
                      (1.4 - 0.4 * co2_current() / bsn_prm%co2_ref))
-              case (1, 2)
+              case (1, 3)
                 !! SWAT-gs / SWAT-gs-LAI: nonlinear MH gs (Li et al. 2019)
                 rc = rc / (0.5 * (pcom(j)%lai_sum + 0.01) / &
                      (1.0 + bsn_prm%gs_b * (co2_current() / bsn_prm%co2_ref - 1.0)))

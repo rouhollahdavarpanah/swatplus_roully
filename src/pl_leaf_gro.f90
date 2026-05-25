@@ -117,12 +117,12 @@
               laimax = Min (laimax, pcom(j)%plcur(ipl)%lai_pot)
             else
               !! LAI-CO2 response (Wen et al. 2024)
-              select case (bsn_cc%gs_method)
+              select case (bsn_cc%gs_LAI_method)
                 case (0, 1)
                   !! SWAT-default / SWAT-gs: no LAI-CO2 response
                   laimax = pcom(j)%plcur(ipl)%lai_pot
-                case (2)
-                  !! SWAT-gs-LAI: LAI-CO2 response (Wen et al. 2024)
+                case (2, 3)
+                  !! SWAT-LAI / SWAT-gs-LAI: LAI-CO2 response (Wen et al. 2024)
                   laimax = pcom(j)%plcur(ipl)%lai_pot * &
                            ((1.0 - pldb(idp)%q_lai) + &
                            pldb(idp)%q_lai * co2_current() / bsn_prm%co2_ref)
