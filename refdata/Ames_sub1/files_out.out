@@ -1,5 +1,5 @@
  files_out.out - OUTPUT FILES WRITTEN
- CHK                       checker.out
+ HRU                       hru_wb_yr.txt
  HRU                       hru_wb_aa.txt
  HRU                       hru_ncycle_aa.txt
  HRU                       hru_nb_aa.txt
@@ -7,16 +7,18 @@
  HRU                       hru_rescarb_aa.txt
  HRU                       hru_plcarb_aa.txt
  HRU                       hru_scf_aa.txt
- HRU                       hru_plc_stat.txt
- HRU                       hru_resc_stat.txt
- HRU                       hru_soilc_stat.txt
  BASIN                     basin_carbon_all.txt
  HRU                       hru_nut_carb_gl_aa.txt
  HRU                       hru_ls_aa.txt
+ HRU                       hru_pw_yr.txt
  HRU                       hru_pw_aa.txt
+ BASIN                     basin_wb_yr.txt
  BASIN                     basin_wb_aa.txt
+ BASIN                     basin_nb_yr.txt
  BASIN                     basin_nb_aa.txt
+ BASIN                     basin_ls_yr.txt
  BASIN                     basin_ls_aa.txt
+ BASIN                     basin_pw_yr.txt
  BASIN                     basin_pw_aa.txt
  CROP                      crop_yld_yr.txt
  CROP                      crop_yld_aa.txt
@@ -40,3 +42,4 @@
  BASIN_SWAT_DEG_CHAN_BUD   basin_sd_chanbud_aa.txt
  BASIN_RECALL_AA           basin_psc_aa.txt
  ROUTING_UNITS             ru_aa.txt
+ CHK                       checker.out

@@ -1,5 +1,5 @@
-co2 input file - dynamic annual
-annual  46  1
+co2 input file - SWAT+ dynamic CO2 driver
+3  46  1
 year    co2_ppm
 1975    331.1300
 1976    332.0300

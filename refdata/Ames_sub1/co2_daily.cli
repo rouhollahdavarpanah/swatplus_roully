@@ -1,5 +1,5 @@
-co2 input file - dynamic daily
-daily  16802  1
+co2 input file - SWAT+ dynamic CO2 driver
+1  16802  1
 year  month  day  co2_ppm
 1975  1  1  330.4003
 1975  1  2  330.4239

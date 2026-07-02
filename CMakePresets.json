@@ -2,6 +2,42 @@
     "version": 3,
     "configurePresets": [
         {
+<<<<<<< Updated upstream
+=======
+            "name": "ifort_debug",
+            "displayName": "ifort debug version",
+            "description": "Preset to builds ifort debug executable for swatplus",
+            "binaryDir": "build/debug",
+            "cacheVariables": {
+                "CMAKE_BUILD_TYPE": "Debug",
+                "CMAKE_INSTALL_PREFIX": "build/debug",
+                "CMAKE_Fortran_COMPILER": "ifort"
+            }
+        },
+        {
+            "name": "ifx_debug",
+            "displayName": "ifx debug version",
+            "description": "Preset to builds a ifx debug executable for swatplus",
+            "binaryDir": "build/debug",
+            "cacheVariables": {
+                "CMAKE_BUILD_TYPE": "Debug",
+                "CMAKE_INSTALL_PREFIX": "build/debug",
+                "CMAKE_Fortran_COMPILER": "ifx"
+            }
+        },
+        {
+            "name": "ifx_release",
+            "displayName": "ifx release version",
+            "description": "Preset to builds a ifx release executable for swatplus",
+            "binaryDir": "build/release",
+            "cacheVariables": {
+                "CMAKE_BUILD_TYPE": "Release",
+                "CMAKE_INSTALL_PREFIX": "build/release",
+                "CMAKE_Fortran_COMPILER": "ifx"
+            }
+        },
+        {
+>>>>>>> Stashed changes
             "name": "gfortran_debug_windows",
             "displayName": "gfortran debug version",
             "description": "Builds a gfortran debug executable for swatplus for windows",
